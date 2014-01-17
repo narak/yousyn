@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+<head>
+  <title>Idvc Music Coop</title>
+  <link href="style.css" rel="stylesheet">
+</head>
+<body>
+  <h2>Idvc Music Coop</h2>
+  <a href="#" id="login-link">Login</a><br>
+  <div id="playlist">Some play list.</div>
+  <div id="search">
+    <div id="buttons">
+      <form method="post" id="search-form" class="hide">
+        <label><input id="query" value="" type="text" placeholder="Search" />
+        <button type="submit">Search</button></label>
+      </form>
+    </div>
+    <div id="search-container">
+    </div>
+  </div>
+
+  <script>
+    var IMCoopConfig = {
+      el: {
+        login: document.getElementById('login-link'),
+        searchResults: document.getElementById('search-container'),
+        playlist: document.getElementById('playlist')
+      }
+    };
+  </script>
+  <script src="//ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js"></script>
+  <script src="auth.js"></script>
+  <script src="youtube.js"></script>
+  <script src="//apis.google.com/js/client.js?onload=IMCoop.auth.googleApiClientReady"></script>
+
+  <div id="ytapiplayer">
+    You need Flash player 8+ and JavaScript enabled to view this video.
+  </div>
+</body>
+</html>

@@ -1,0 +1,144 @@
+/* Web Fonts: Open Sans and Open Sans Condensed */
+@import url(//fonts.googleapis.com/css?family=Open+Sans:400italic,400,600,700,300|Open+Sans+Condensed:300,700);
+/* Font Icons: Font Awesome
+@import url(//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css);  */
+
+/* ==========================================================================
+   General - Setting up some base styles
+   ========================================================================== */
+
+html {
+    height: 100%;
+    max-height: 100%;
+    font-size: 90% !important;
+}
+
+body {
+    height: 100%;
+    max-height: 100%;
+    font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    line-height: 1.4rem;
+    color: #3A4145;
+    text-rendering: optimizeLegibility;
+    padding: 2rem 4rem;
+    margin: 0;
+}
+
+::-moz-selection {
+    color: #222;
+    background: #D6EDFF;
+    text-shadow: none;
+}
+
+a {
+    color: #3498db;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #000;
+}
+
+h1, h2, h3,
+h4, h5, h6 {
+    text-rendering: optimizeLegibility;
+    line-height: 1.2;
+    margin-top: 0;
+    font-family: "Open Sans Condensed", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: 300;
+    margin: 0;
+}
+h1 {
+    font-size: 3rem;
+}
+h2 {
+    font-size: 2.5rem;
+}
+h3 {
+    font-size: 1.9rem;
+    margin: 0 0 1rem;
+}
+h4 {
+    font-size: 1.75rem;
+    color: #dd514c;
+    margin: 0;
+}
+h5 {
+    font-size: 1.5rem;
+}
+h6 {
+    font-size: 1rem;
+    margin: .5rem 0;
+    text-transform: uppercase;
+}
+
+    h1 a, h2 a, h3 a,
+    h4 a, h5 a, h6 a {
+        color: #222;
+    }
+
+    h1 a:hover, h2 a:hover, h3 a:hover,
+    h4 a:hover, h5 a:hover, h6 a:hover {
+        color: #3498db;
+    }
+
+p, ul, ol {
+    margin: 1.6rem 0;
+    list-style: none;
+}
+
+ol ol, ul ul,
+ul ol, ol ul {
+    margin: 0.4rem 0;
+}
+
+hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid #efefef;
+    margin: 1.5rem 0;
+    padding: 0;
+}
+
+/** Reusable **/
+.hide {
+    display: none;
+}
+
+/** Structure **/
+#playlist,
+#search {
+    float: left;
+    display: inline-block;
+    width: 50%;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    height: 600px;
+}
+
+#search {
+    padding-left: 2rem;
+}
+
+.video-player {
+    opacity: .1;
+}
+
+#search input[type="text"] {
+    outline: 0;
+    font-family: "Open Sans Condensed", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    padding: .5rem 1rem;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    width: 100%;
+    font-size: 1.3rem;
+    border-radius: .3rem;
+    border: 1px solid #ccc;
+}
+
+#search-form button {
+    visibility: hidden;
+}
