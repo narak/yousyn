@@ -286,6 +286,19 @@ IMCoop.playlist = (function() {
         next.previous(previous);
       }
 
+      if (plHead === item) {
+        plHead = item.next() ? item.next() : undefined;
+      }
+      if (plTail === item) {
+        plTail = item.previous() ? item.previous() : undefined;
+      }
+      if (plCurrent === item) {
+        plCurrent = undefined;
+      }
+      if (plOldCurr === item) {
+        plOldCurr = undefined;
+      }
+
       delete videoIdIndex[item.videoId];
       removeFromArray(videoIds, item.videoId);
 
