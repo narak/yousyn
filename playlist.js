@@ -293,9 +293,8 @@ IMCoop.playlist = (function() {
         plTail = item.previous() ? item.previous() : undefined;
       }
       if (plCurrent === item) {
+        alf.publish('playlist:stop');
         plCurrent = undefined;
-      }
-      if (plOldCurr === item) {
         plOldCurr = undefined;
       }
 
