@@ -5,10 +5,11 @@ IMCoop.playlist = (function() {
    * Event subscriptions.
    */
   var videoIdIndex = {},
+      videoIds = [],
       playlist = {},
-      plHead, plTail, plCurrent,
-      addToPlaylistView, doEventsFn,
-      pollTimer,
+      plHead, plTail, plCurrent, plOldCurr,
+      addToPlaylistView, doEventsFn, timeFromSexFn,
+      pollTimer, isRepeatOn = false, isRandomOn = false,
       length = 0;
 
   /**
@@ -22,10 +23,18 @@ IMCoop.playlist = (function() {
       plTail = plCurrent = plHead = undefined;
       length = 0;
       window.localStorage.clear('playlist');
-      return false;
     });
 
-    alf.event.on(IMCoopConfig.el.playlist, 'click', '.list a', function(evt) {
+    alf.event.on(IMCoopConfig.el.playlist, 'click', '.list .remove', function(evt) {
+      evt.preventDefault();
+      var videoId = this.getAttribute('href').substring(1),
+          item = videoIdIndex[videoId];
+      if (videoId && item) {
+        playlist.remove(item);
+      }
+    });
+
+    alf.event.on(IMCoopConfig.el.playlist, 'click', '.list .play', function(evt) {
       evt.preventDefault();
       var videoId = this.getAttribute('href').substring(1);
       if (videoId && videoIdIndex[videoId]) {
@@ -58,6 +67,30 @@ IMCoop.playlist = (function() {
       evt.preventDefault();
       alf.publish('playlist:previous');
     });
+
+    alf.event.on(IMCoopConfig.el.btnRepeat, 'click', function(evt) {
+      evt.preventDefault();
+      if (isRepeatOn) {
+        this.classList.remove('active');
+      } else {
+        this.classList.add('active');
+      }
+      isRepeatOn = !isRepeatOn;
+    });
+
+    alf.event.on(IMCoopConfig.el.btnRandom, 'click', function(evt) {
+      evt.preventDefault();
+      if (isRandomOn) {
+        this.classList.remove('active');
+        isRepeatOn = false;
+        IMCoopConfig.el.btnRepeat.classList.remove('active');
+      } else {
+        this.classList.add('active');
+        isRepeatOn = true;
+        IMCoopConfig.el.btnRepeat.classList.add('active');
+      }
+      isRandomOn = !isRandomOn;
+    });
   };
 
   alf.subscribe('playlist:play', function(videoId) {
@@ -72,7 +105,13 @@ IMCoop.playlist = (function() {
     IMCoop.youtube.play(!plCurrent.isPaused ? plCurrent.videoId : undefined);
     delete plCurrent.isPaused;
 
-    plCurrent.el.classList.add('playing');
+    if (plOldCurr && !plCurrent.isPaused) {
+      plOldCurr.el.classList.remove(IMCoopConfig.playingClass);
+    }
+    plOldCurr = plCurrent;
+    plCurrent.el.classList.add(IMCoopConfig.playingClass);
+
+    document.title = '\u266B ' + plCurrent.title;
 
     if (!pollTimer) {
       pollTimer = window.setInterval(function() {
@@ -83,10 +122,31 @@ IMCoop.playlist = (function() {
         if (props.currentTime === props.totalTime ||
             props.currentTime > props.totalTime - 2) {
           alf.publish('playlist:next');
+        } else {
+          plCurrent.elElapsedTime.innerHTML = timeFromSexFn(props.currentTime);
         }
       }, 1000);
     }
   });
+
+  timeFromSexFn = function(sex) {
+    var hours, mins, secs, res;
+    res = sex / 60;
+    mins = Math.floor(res);
+    secs = Math.round((res % 1) * 60);
+    if (secs < 10) {
+      str = mins + ':0' + secs;
+    } else {
+      str = mins + ':' + secs;
+    }
+
+    if (sex > 3600) {
+      alert('Progressive shit jeah!!!');
+      hours = Math.floor(sex / 3600);
+      str = hours + ':' + str;
+    }
+    return str;
+  };
 
   alf.subscribe('playlist:pause', function() {
     IMCoopConfig.el.btnPlay.style.display = '';
@@ -98,31 +158,42 @@ IMCoop.playlist = (function() {
   });
 
   alf.subscribe('playlist:stop', function() {
+    IMCoopConfig.el.btnPlay.style.display = '';
+    IMCoopConfig.el.btnPause.style.display = 'none';
     IMCoop.youtube.stop();
     window.clearInterval(pollTimer);
+    plOldCurr.el.classList.remove(IMCoopConfig.playingClass);
     pollTimer = undefined;
-    plCurrent.el.classList.remove('playing');
   });
 
+  var getRandomNum = function(min, max) {
+    return Math.floor(Math.random() * (max - min) + min);
+  };
   alf.subscribe('playlist:next', function() {
     if (!plCurrent) {
       plCurrent = plHead;
     }
-    plCurrent.el.classList.remove('playing');
 
-    if (plCurrent.next()) {
-      plCurrent = plCurrent.next();
+    if (isRandomOn) {
+      plCurrent = videoIdIndex[videoIds[getRandomNum(0, videoIds.length-1)]];
     } else {
-      plCurrent = plHead;
+      plCurrent = plCurrent.next();
+      if (!plCurrent && isRepeatOn) {
+        plCurrent = plHead;
+      }
     }
-    alf.publish('playlist:play');
+
+    if (plCurrent) {
+      alf.publish('playlist:play');
+    } else {
+      alf.publish('playlist:stop');
+    }
   });
 
   alf.subscribe('playlist:previous', function() {
     if (!plCurrent) {
       plCurrent = plTail;
     }
-    plCurrent.el.classList.remove('playing');
 
     if (plCurrent.previous()) {
       plCurrent = plCurrent.previous();
@@ -155,11 +226,27 @@ IMCoop.playlist = (function() {
   };
 
   addToPlaylistView = function(itemObj) {
-    var html = alf.dom.parseHTML(IMCoopConfig.template.playlistItem(itemObj))[0];
+    var newItem = new Item(itemObj),
+        html;
+    newItem.elapsedTime = '<span class="elapsedTimePlaceholder"></span>';
+    html = alf.dom.parseHTML(IMCoopConfig.template.playlistItem(newItem))[0];
+
     itemObj.el = html;
+    itemObj.elElapsedTime = itemObj.el.querySelector('.elapsedTimePlaceholder');
     IMCoopConfig.el.playlist.appendChild(html);
   };
   alf.subscribe('playlist:add', addToPlaylistView);
+
+  var removeFromArray = function(arr) {
+      var what, a = arguments, L = a.length, ax;
+      while (L > 1 && arr.length) {
+          what = a[--L];
+          while ((ax= arr.indexOf(what)) !== -1) {
+              arr.splice(ax, 1);
+          }
+      }
+      return arr;
+  };
 
   /**
    * Public.
@@ -167,6 +254,10 @@ IMCoop.playlist = (function() {
   playlist = {
     add: function(item) {
       var itemObj = new Item(item);
+      if (videoIdIndex[itemObj.videoId]) {
+        alert('This video already exists in the playlist');
+        return;
+      }
       if (!plHead) {
         plHead = plTail = itemObj;
       } else {
@@ -175,6 +266,7 @@ IMCoop.playlist = (function() {
         plTail = itemObj;
       }
       videoIdIndex[itemObj.videoId] = itemObj;
+      videoIds.push(itemObj.videoId);
 
       alf.publish('playlist:add', itemObj);
       return itemObj;
@@ -183,6 +275,8 @@ IMCoop.playlist = (function() {
     remove: function(item) {
       var previous,
           next;
+
+      if (item.el) item.el.remove();
       previous = item.previous();
       next = item.next();
       if (previous) {
@@ -192,8 +286,10 @@ IMCoop.playlist = (function() {
         next.previous(previous);
       }
 
-      alf.publish('playlist:remove', itemObj);
-      return itemObj;
+      delete videoIdIndex[item.videoId];
+      removeFromArray(videoIds, item.videoId);
+
+      alf.publish('playlist:remove', item);
     },
 
     next: function() {
@@ -243,7 +339,7 @@ IMCoop.playlist = (function() {
   /**
    * Save playlist to local storage everytime something is added to it.
    */
-  alf.subscribe('playlist:add', function() {
+  var saveToLocal = function() {
     var item = plHead,
         marshalled = [];
 
@@ -256,7 +352,9 @@ IMCoop.playlist = (function() {
       item = item.next();
     }
     window.localStorage.setItem('playlist', JSON.stringify(marshalled));
-  });
+  };
+  alf.subscribe('playlist:add', saveToLocal);
+  alf.subscribe('playlist:remove', saveToLocal);
 
   doEventsFn();
   return playlist;
