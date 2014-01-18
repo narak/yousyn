@@ -6,13 +6,19 @@
 </head>
 <body>
   <div id="playlist">
+    <ul class="controls">
+      <li><a href="#play"><i class="fa fa-backward"></i></a></li>
+      <li><a href="#play"><i class="fa fa-play"></i></a></li>
+      <li><a href="#play"><i class="fa fa-stop"></i></a></li>
+      <li><a href="#play"><i class="fa fa-forward"></i></a></li>
+    </ul>
     <h2>Idvc Music Coop</h2>
     <a href="#" id="login-link" class="show-on-load">Login</a>
     <ul class="show-on-load"><li>Playlist is empty.</li></ul>
   </div>
   <div id="search">
     <div id="buttons" class="show-on-load">
-      <form method="post" id="search-form" class="hide">
+      <form method="post" id="search-form">
         <label><input id="query" value="" type="text" placeholder="Search" autocomplete="off" required autofocus />
         <button type="submit">Search</button></label>
       </form>
@@ -34,8 +40,10 @@
       }
     };
   </script>
+  <script src="alf.js"></script>
   <script src="//ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js"></script>
   <script src="playlist.js"></script>
+  <script src="search.js"></script>
   <script src="youtube.js"></script>
   <script src="auth.js"></script>
   <script> var googleApiClientReady = IMCoop.auth.googleApiClientReady; </script>

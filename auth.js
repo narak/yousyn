@@ -43,7 +43,7 @@ var IMCoop = IMCoop || {};
       loginLink.classList.remove('show-on-load');
       // Make the #login-link clickable. Attempt a non-immediate OAuth 2.0
       // client flow. The current function is called when that flow completes.
-      loginLink.addEventListener('click', function() {
+      alf.event.on(loginLink, 'click', function() {
         gapi.auth.authorize({
           client_id: OAUTH2_CLIENT_ID,
           scope: OAUTH2_SCOPES,
@@ -58,7 +58,7 @@ var IMCoop = IMCoop || {};
   // http://code.google.com/p/google-api-javascript-client/wiki/GettingStarted#Loading_the_Client
   var loadAPIClientInterfaces = function() {
     gapi.client.load('youtube', 'v3', function() {
-      IMCoop.youtube.handleAPILoaded();
+      alf.publish('youtube:loaded');
     });
   }
 })();

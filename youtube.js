@@ -5,21 +5,17 @@ IMCoop.youtube = (function() {
    * Private.
    */
   var searchFn,
-      addToPlaylistFn,
-      displayResultsFn,
       stripPTMSFn,
       params,
       atts,
-      ytplayer,
-      searchResults,
-      videoIds;
+      ytplayer;
 
   // Search for a specified string.
-  searchFn = function(evt) {
-    evt.preventDefault();
+  searchFn = function(term, callback) {
+    // Search for the term.
     gapi.client.youtube.search.list({
-        q: IMCoopConfig.el.searchField.value,
-        part: 'id,snippet',
+        q: term,
+        part: 'id',
         maxResults: 8,
         type: 'video',
         videoEmbeddable: 'true'
@@ -27,43 +23,23 @@ IMCoop.youtube = (function() {
       .execute(function(response) {
         videoIds = response.result.items.map(function(item) { return item.id.videoId; } );
 
+        // Get details for all the search results.
         gapi.client.youtube.videos.list({
             part: 'id,snippet,contentDetails',
             id: videoIds.join(',')
           })
           .execute(function(contentResp) {
-            searchResults = {};
+            var searchResults = {};
             contentResp.result.items.forEach(function(itemCont) {
               itemCont.contentDetails.duration =
                 stripPTMSFn(itemCont.contentDetails.duration);
               searchResults[itemCont.id] = itemCont;
             });
-            displayResultsFn();
+
+            // Send indexed results back to callback.
+            callback(searchResults);
           });
       });
-    return false;
-  };
-
-  addToPlaylistFn = function(evt) {
-    IMCoop.playlist.add(searchResults(evt.target.getAttribute('href').substr(1)));
-  };
-
-  /**
-   * Loops through the current search results and displays them.
-   */
-  displayResultsFn = function() {
-    var html = '';
-    if (videoIds instanceof Array) {
-        videoIds.forEach(function(videoId) {
-          var item = searchResults[videoId];
-          html += '<li><a href="#' + videoId + '">' +
-            '<i class="fa fa-arrow-circle-o-left"></i> ' + item.snippet.title +
-            ' <span class="meta">' + item.contentDetails.duration + '</span></a></li>';
-        });
-        IMCoopConfig.el.searchResults.innerHTML = html;
-    } else {
-      throw new Error('Invalid search results. Expecting an array, dunno wtf else was returned. Youtube\'s a bastard.');
-    }
   };
 
   /**
@@ -94,20 +70,9 @@ IMCoop.youtube = (function() {
    * Public.
    */
   return {
-    // After the API loads, call a function to enable the search box.
-    handleAPILoaded: function() {
-      IMCoopConfig.el.searchForm.classList.remove('hide');
-      IMCoopConfig.el.searchForm.addEventListener('submit', searchFn);
-      IMCoopConfig.el.searchResults.addEventListener('click', addToPlaylistFn);
-
-      var nodes = document.querySelectorAll('.show-on-load'),
-          nLen = nodes.length;
-      for (var i = 0; i < nLen; ++i) {
-        nodes[i].classList.remove('show-on-load');
-      }
-    },
     play: function(item) {
       ytplayer.loadVideoById(item.id.videoId);
-    }
+    },
+    search: searchFn
   };
 })();

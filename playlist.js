@@ -4,7 +4,8 @@ IMCoop.playlist = (function() {
   /**
    * Event subscriptions.
    */
-  var plHead, plTail, plCurrent,
+  var retVal,
+      plHead, plTail, plCurrent,
       length = 0;
 
   /**
@@ -12,7 +13,7 @@ IMCoop.playlist = (function() {
    */
   var Item = function(item) {
     this._item = item;
-    this.videoId = item.id.videoId;
+    this.videoId = item.id;
     this.title = item.snippet.title;
     this.duration = item.contentDetails.duration;
     return this;
@@ -33,7 +34,7 @@ IMCoop.playlist = (function() {
   /**
    * Public.
    */
-  return {
+  retVal = {
     add: function(item) {
       var itemObj = new Item(item);
       if (!plHead) {
@@ -43,6 +44,8 @@ IMCoop.playlist = (function() {
         plTail.next(itemObj);
         plTail = itemObj;
       }
+
+      alf.publish('playlist:add', itemObj);
       return length++;
     },
 
@@ -57,25 +60,36 @@ IMCoop.playlist = (function() {
       if (next) {
         next.previous(previous);
       }
+
+      alf.publish('playlist:remove', itemObj);
       return length--;
     },
 
     next: function() {
+      var retVal;
       if (!plCurrent) {
         plCurrent = plHead;
-        return plCurrent;
+        retVal = plCurrent;
       } else {
-        return plCurrent.next();
+        retVal = plCurrent.next();
       }
+
+      alf.publish('playlist:next', retVal);
+      return retVal;
     },
 
     previous: function() {
+      var retVal;
       if (!plCurrent) {
         plCurrent = plTail;
-        return plCurrent;
+        retVal = plCurrent;
       } else {
-        return plCurrent.previous();
+        retVal = plCurrent.previous();
       }
+
+      alf.publish('playlist:previous', retVal);
+      return retVal;
     }
   };
+  return retVal;
 })();
