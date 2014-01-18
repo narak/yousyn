@@ -1,7 +1,7 @@
 /* Web Fonts: Open Sans and Open Sans Condensed */
 @import url(//fonts.googleapis.com/css?family=Open+Sans:400italic,400,600,700,300|Open+Sans+Condensed:300,700);
-/* Font Icons: Font Awesome
-@import url(//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css);  */
+/* Font Icons: Font Awesome */
+@import url(//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css);
 
 /* ==========================================================================
    General - Setting up some base styles
@@ -18,9 +18,9 @@ body {
     max-height: 100%;
     font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
     line-height: 1.4rem;
-    color: #3A4145;
+    color: #f1f1f1;
     text-rendering: optimizeLegibility;
-    padding: 2rem 4rem;
+    padding: 0;
     margin: 0;
 }
 
@@ -84,7 +84,7 @@ h6 {
 
 p, ul, ol {
     margin: 1.6rem 0;
-    list-style: none;
+    padding: 0 1.6rem;
 }
 
 ol ol, ul ul,
@@ -101,44 +101,101 @@ hr {
     padding: 0;
 }
 
-/** Reusable **/
-.hide {
+.hide, .show-on-load {
     display: none;
 }
 
-/** Structure **/
+.video-player {
+    opacity: .5;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
 #playlist,
 #search {
     float: left;
     display: inline-block;
-    width: 50%;
+    width: 45%;
+    margin: 2.5%;
+    padding: 2rem;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
     height: 600px;
+    background-color: rgba(0, 0, 0, .5);
+    -webkit-border-radius: .3rem;
+    -moz-border-radius: .3rem;
+    border-radius: .3rem;
 }
 
-#search {
-    padding-left: 2rem;
-}
-
-.video-player {
-    opacity: .1;
-}
-
-#search input[type="text"] {
+#query {
+    color: #E7E9F3;
     outline: 0;
     font-family: "Open Sans Condensed", "Helvetica Neue", Helvetica, Arial, sans-serif;
     padding: .5rem 1rem;
+    margin: 0 0 1rem;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
     width: 100%;
     font-size: 1.3rem;
     border-radius: .3rem;
-    border: 1px solid #ccc;
+    border: 0;
+    background-color: rgba(0, 0, 0, .1);
+}
+#query:focus {
+    background-color: rgba(0, 0, 0, .3);
+    -webkit-box-shadow: 0 0 6px #2B2B4D;
+    -moz-box-shadow: 0 0 6px #2B2B4D;
+    box-shadow: 0 0 6px #2B2B4D;
 }
 
 #search-form button {
+    position: absolute;
     visibility: hidden;
+}
+
+#search-container ul,
+#playlist ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+#search-container li,
+#playlist li {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#search-container li a,
+#playlist li a {
+    color: #E7E9F3;
+    text-decoration: none;
+    display: block;
+    margin: 0;
+    padding: .4rem .8rem .4rem;
+    border-bottom: 1px solid #55545F;
+    font-weight: 300;
+}
+
+#search-container li a:hover,
+#playlist li a:hover {
+    background-color: rgba(0, 0, 0, .3);
+    -webkit-box-shadow: inset 0 0 6px #424242;
+    -moz-box-shadow: inset 0 0 6px #424242;
+    box-shadow: inset 0 0 6px #424242;
+}
+
+#search-container .meta,
+#playlist .meta {
+    display: inline-block;
+    float: right;
+    font-size: .8rem;
+    color: #ccc;
 }

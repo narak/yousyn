@@ -35,13 +35,15 @@ var IMCoop = IMCoop || {};
 
   // Handle the result of a gapi.auth.authorize() call.
   var handleAuthResult = function(authResult) {
+    var loginLink = document.getElementById('login-link');
     if (authResult) {
-      $('#login-link').hide();
+      loginLink.remove();
       loadAPIClientInterfaces();
     } else {
+      loginLink.classList.remove('show-on-load');
       // Make the #login-link clickable. Attempt a non-immediate OAuth 2.0
       // client flow. The current function is called when that flow completes.
-      $('#login-link').click(function() {
+      loginLink.addEventListener('click', function() {
         gapi.auth.authorize({
           client_id: OAUTH2_CLIENT_ID,
           scope: OAUTH2_SCOPES,
