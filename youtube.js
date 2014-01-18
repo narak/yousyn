@@ -79,8 +79,12 @@ IMCoop.youtube = (function() {
     search: searchFn,
 
     play: function(videoId) {
-      ytplayer.stopVideo();
-      ytplayer.loadVideoById(videoId);
+      if (videoId) {
+        ytplayer.stopVideo();
+        ytplayer.loadVideoById(videoId);
+      } else {
+        ytplayer.playVideo();
+      }
     },
 
     stop: function() {

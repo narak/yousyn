@@ -127,7 +127,7 @@ hr {
     font-size: 1.3rem;
     border-radius: .3rem;
     border: 0;
-    background-color: rgba(0, 0, 0, .3);
+    background-color: rgba(0, 0, 0, .5);
 }
 #query:focus {
     background-color: rgba(0, 0, 0, .8);
@@ -166,7 +166,7 @@ hr {
         overflow-y: auto;
         overflow-x: hidden;
         width: 100%;
-        background-color: rgba(0, 0, 0, .3);
+        background-color: rgba(0, 0, 0, .5);
     }
 
     #search-container li,

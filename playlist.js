@@ -26,6 +26,7 @@ IMCoop.playlist = (function() {
     });
 
     alf.event.on(IMCoopConfig.el.playlist, 'click', '.list a', function(evt) {
+      evt.preventDefault();
       var videoId = this.getAttribute('href').substring(1);
       if (videoId && videoIdIndex[videoId]) {
         plCurrent = videoIdIndex[videoId];
@@ -33,27 +34,44 @@ IMCoop.playlist = (function() {
       }
     });
 
-    alf.event.on(IMCoopConfig.el.btnPlayPause, 'click', function(evt) {
+    alf.event.on(IMCoopConfig.el.btnPlay, 'click', function(evt) {
+      evt.preventDefault();
       alf.publish('playlist:play');
     });
+
+    alf.event.on(IMCoopConfig.el.btnPause, 'click', function(evt) {
+      evt.preventDefault();
+      alf.publish('playlist:pause');
+    });
+
     alf.event.on(IMCoopConfig.el.btnStop, 'click', function(evt) {
+      evt.preventDefault();
       alf.publish('playlist:stop');
     });
+
     alf.event.on(IMCoopConfig.el.btnNext, 'click', function(evt) {
+      evt.preventDefault();
       alf.publish('playlist:next');
     });
+
     alf.event.on(IMCoopConfig.el.btnPrevious, 'click', function(evt) {
+      evt.preventDefault();
       alf.publish('playlist:previous');
     });
   };
 
   alf.subscribe('playlist:play', function(videoId) {
+    IMCoopConfig.el.btnPlay.style.display = 'none';
+    IMCoopConfig.el.btnPause.style.display = '';
+
     if (!plCurrent) {
       plCurrent = plHead;
     }
 
     console.log('Playing: ', plCurrent.title, plCurrent.videoId);
-    IMCoop.youtube.play(plCurrent.videoId);
+    IMCoop.youtube.play(!plCurrent.isPaused ? plCurrent.videoId : undefined);
+    delete plCurrent.isPaused;
+
     plCurrent.el.classList.add('playing');
 
     if (!pollTimer) {
@@ -68,6 +86,15 @@ IMCoop.playlist = (function() {
         }
       }, 1000);
     }
+  });
+
+  alf.subscribe('playlist:pause', function() {
+    IMCoopConfig.el.btnPlay.style.display = '';
+    IMCoopConfig.el.btnPause.style.display = 'none';
+    IMCoop.youtube.pause();
+    plCurrent.isPaused = true;
+    window.clearInterval(pollTimer);
+    pollTimer = undefined;
   });
 
   alf.subscribe('playlist:stop', function() {

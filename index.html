@@ -9,6 +9,7 @@
     <ul class="controls show-on-load">
       <li class="previous-track"><a href="#previous-track"><i class="fa fa-backward"></i></a></li>
       <li class="play"><a href="#play"><i class="fa fa-play"></i></a></li>
+      <li class="pause" style="display: none"><a href="#pause"><i class="fa fa-pause"></i></a></li>
       <li class="stop"><a href="#stop"><i class="fa fa-stop"></i></a></li>
       <li class="next-track"><a href="#next-track"><i class="fa fa-forward"></i></a></li>
     </ul>
@@ -23,7 +24,7 @@
     <div id="buttons" class="show-on-load">
       <form method="post" id="search-form">
         <label><input id="query" type="text" name="term"
-          placeholder="Search" autocomplete="off" value="chosen pessimist"
+          placeholder="Search" autocomplete="off"
           required autofocus>
         <button type="submit">Search</button></label>
       </form>
@@ -44,7 +45,8 @@
         searchForm: document.getElementById('search-form'),
         searchResults: document.querySelector('#search-container ul.list'),
         btnRemoveAll: document.querySelector('#playlist .remove-all'),
-        btnPlayPause: document.querySelector('#playlist .play'),
+        btnPlay: document.querySelector('#playlist .play'),
+        btnPause: document.querySelector('#playlist .pause'),
         btnStop: document.querySelector('#playlist .stop'),
         btnNext: document.querySelector('#playlist .next-track'),
         btnPrevious: document.querySelector('#playlist .previous-track')

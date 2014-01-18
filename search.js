@@ -10,6 +10,7 @@ IMCoop.search = (function() {
       videoIds;
 
   addToPlaylistFn = function(evt) {
+    evt.preventDefault();
     IMCoop.playlist.add(searchResults[this.getAttribute('href').substr(1)]);
   };
 
