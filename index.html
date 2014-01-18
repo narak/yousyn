@@ -5,6 +5,7 @@
   <link href="style.css" rel="stylesheet">
 </head>
 <body>
+  <a href="#rollup" id="roll-up"><i class="fa fa-chevron-left"></i><i class="fa fa-chevron-right"></i></a>
   <div id="playlist">
     <ul class="controls show-on-load">
       <li class="previous-track"><a href="#previous-track"><i class="fa fa-backward"></i></a></li>
@@ -71,6 +72,11 @@
             '<span class="actions"><a href="#{{=videoId}}" class="remove"><i class="fa fa-times"></i></a></span></li>')
       }
     };
+
+    alf.event.on(document.getElementById('roll-up'), 'click', function() {
+      document.getElementById('playlist').classList.toggle('hidden');
+      document.getElementById('search').classList.toggle('hidden');
+    });
   </script>
   <div id="ytapiplayer">
     You need Flash player 8+ and JavaScript enabled to view this video.

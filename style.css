@@ -116,6 +116,16 @@ hr {
     z-index: -1;
 }
 
+#roll-up {
+    display: block;
+    text-align: center;
+    padding: .5rem 0;
+    margin: .5rem 0;
+}
+#roll-up:hover {
+    background-color: rgba(0, 0, 0, .9);
+}
+
 #query {
     color: #E7E9F3;
     outline: 0;
@@ -148,11 +158,23 @@ hr {
     float: left;
     display: inline-block;
     width: 45%;
-    margin: 2.5%;
-    padding: 2rem;
+    margin: 0 2.5% 2.5%;
+    padding: 0 2rem 2rem;
     box-sizing: border-box;
     height: 600px;
     border-radius: .3rem;
+    -webkit-transition: -webkit-transform .5s ease-in-out;
+    -moz-transition: -webkit-transform .5s ease-in-out;
+    -ms-transition: -webkit-transform .5s ease-in-out;
+    -o-transition: -webkit-transform .5s ease-in-out;
+    transition: -webkit-transform .5s ease-in-out;
+}
+
+#playlist.hidden {
+    -webkit-transform: translateX(-100%);
+}
+#search.hidden {
+    -webkit-transform: translateX(100%);
 }
 
     #search-container ul,
