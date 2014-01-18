@@ -637,9 +637,10 @@
         alf.publish = function(topic, args) {
             if (topics[topic]) {
                 var thisTopic = topics[topic],
-                thisArgs = args||[];
+                    thisArgs = args || [],
+                    callOrApply = util.isArray(thisArgs) ? 'apply' : 'call';
                 for (var i = thisTopic.length - 1; i >= 0; i--) {
-                    thisTopic[i].callback.apply(thisTopic[i].context, thisArgs);
+                    thisTopic[i].callback[callOrApply](thisTopic[i].context, thisArgs);
                 }
             }
         };

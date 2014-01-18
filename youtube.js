@@ -13,10 +13,11 @@ IMCoop.youtube = (function() {
   // Search for a specified string.
   searchFn = function(term, callback) {
     // Search for the term.
+    alf.publish('youtube:startSearch', term);
     gapi.client.youtube.search.list({
         q: term,
         part: 'id',
-        maxResults: 8,
+        maxResults: 10,
         type: 'video',
         videoEmbeddable: 'true'
       })
@@ -30,10 +31,11 @@ IMCoop.youtube = (function() {
           })
           .execute(function(contentResp) {
             var searchResults = {};
-            contentResp.result.items.forEach(function(itemCont) {
-              itemCont.contentDetails.duration =
-                stripPTMSFn(itemCont.contentDetails.duration);
-              searchResults[itemCont.id] = itemCont;
+            contentResp.result.items.forEach(function(item) {
+              item.videoId = item.id;
+              item.title = item.snippet.title;
+              item.duration = stripPTMSFn(item.contentDetails.duration);
+              searchResults[item.id] = item;
             });
 
             // Send indexed results back to callback.
@@ -47,7 +49,11 @@ IMCoop.youtube = (function() {
    * eg. PT15M20S to 15:20.
    */
   stripPTMSFn = function(str) {
-    return str.replace(/P|T|S/g, '').replace(/M/,':').replace(/^(\d):/, '0$1:').replace(/:(\d)$/, ':0$1');
+    return str.replace(/P|T|S/g, '')
+      .replace(/M|H/g,':')
+      .replace(/^(\d):/, '0$1:')
+      .replace(/:(\d):/, ':0$1:')
+      .replace(/:(\d)$/, ':0$1');
   };
 
   params = {
@@ -70,9 +76,18 @@ IMCoop.youtube = (function() {
    * Public.
    */
   return {
-    play: function(item) {
-      ytplayer.loadVideoById(item.id.videoId);
+    search: searchFn,
+
+    play: function(videoId) {
+      ytplayer.stopVideo();
+      ytplayer.loadVideoById(videoId);
     },
-    search: searchFn
+
+    getProps: function() {
+      return {
+        totalTime: Math.round(+ytplayer.getDuration()),
+        currentTime: Math.round(+ytplayer.getCurrentTime())
+      };
+    }
   };
 })();

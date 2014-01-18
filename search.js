@@ -7,15 +7,7 @@ IMCoop.search = (function() {
   var addToPlaylistFn,
       displayResultsFn,
       searchResults,
-      videoIds,
-      template;
-
-  template = {
-    item: alf.template('<li><a href="#{{=id}}">' +
-        '<i class="fa fa-arrow-circle-o-left"></i> {{=snippet.title}}' +
-        ' <span class="meta">{{=contentDetails.duration}}</span></a></li>')
-  };
-
+      videoIds;
 
   addToPlaylistFn = function(evt) {
     IMCoop.playlist.add(searchResults[this.getAttribute('href').substr(1)]);
@@ -32,7 +24,7 @@ IMCoop.search = (function() {
 
     videoIds.forEach(function(videoId) {
       var item = rows[videoId];
-      html += template.item(item);
+      html += IMCoopConfig.template.searchItem(item);
     });
 
     IMCoopConfig.el.searchResults.innerHTML = html;
@@ -41,7 +33,7 @@ IMCoop.search = (function() {
   alf.subscribe('youtube:loaded', function() {
     alf.event.on(IMCoopConfig.el.searchForm, 'submit', function(evt) {
       evt.preventDefault();
-      IMCoop.youtube.search(this.value, displayResultsFn);
+      IMCoop.youtube.search(this.term.value, displayResultsFn);
       return false;
     });
 
@@ -50,6 +42,11 @@ IMCoop.search = (function() {
     alf.dom.each(document.querySelectorAll('.show-on-load'), function(el) {
       el.classList.remove('show-on-load');
     });
+  });
+
+  alf.subscribe('youtube:startSearch', function(term) {
+    IMCoopConfig.el.searchResults.innerHTML =
+      IMCoopConfig.template.searching({ term: term });
   });
 
   /**
