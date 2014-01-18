@@ -32,9 +32,26 @@ IMCoop.playlist = (function() {
         alf.publish('playlist:play');
       }
     });
+
+    alf.event.on(IMCoopConfig.el.btnPlayPause, 'click', function(evt) {
+      alf.publish('playlist:play');
+    });
+    alf.event.on(IMCoopConfig.el.btnStop, 'click', function(evt) {
+      alf.publish('playlist:stop');
+    });
+    alf.event.on(IMCoopConfig.el.btnNext, 'click', function(evt) {
+      alf.publish('playlist:next');
+    });
+    alf.event.on(IMCoopConfig.el.btnPrevious, 'click', function(evt) {
+      alf.publish('playlist:previous');
+    });
   };
 
   alf.subscribe('playlist:play', function(videoId) {
+    if (!plCurrent) {
+      plCurrent = plHead;
+    }
+
     console.log('Playing: ', plCurrent.title, plCurrent.videoId);
     IMCoop.youtube.play(plCurrent.videoId);
     plCurrent.el.classList.add('playing');
@@ -47,24 +64,45 @@ IMCoop.playlist = (function() {
 
         if (props.currentTime === props.totalTime ||
             props.currentTime > props.totalTime - 2) {
-
-          if (plCurrent && plCurrent.next()) {
-            plCurrent.el.classList.remove('playing');
-            plCurrent = plCurrent.next();
-            alf.publish('playlist:play');
-            alf.publish('playlist:next');
-
-          } else {
-            alf.publish('playlist:stop');
-          }
+          alf.publish('playlist:next');
         }
       }, 1000);
     }
   });
 
-  alf.subscribe('playlist:stop', function(videoId) {
+  alf.subscribe('playlist:stop', function() {
+    IMCoop.youtube.stop();
     window.clearInterval(pollTimer);
     pollTimer = undefined;
+    plCurrent.el.classList.remove('playing');
+  });
+
+  alf.subscribe('playlist:next', function() {
+    if (!plCurrent) {
+      plCurrent = plHead;
+    }
+    plCurrent.el.classList.remove('playing');
+
+    if (plCurrent.next()) {
+      plCurrent = plCurrent.next();
+    } else {
+      plCurrent = plHead;
+    }
+    alf.publish('playlist:play');
+  });
+
+  alf.subscribe('playlist:previous', function() {
+    if (!plCurrent) {
+      plCurrent = plTail;
+    }
+    plCurrent.el.classList.remove('playing');
+
+    if (plCurrent.previous()) {
+      plCurrent = plCurrent.previous();
+    } else {
+      plCurrent = plTail;
+    }
+    alf.publish('playlist:play');
   });
 
   /**
@@ -112,7 +150,7 @@ IMCoop.playlist = (function() {
       videoIdIndex[itemObj.videoId] = itemObj;
 
       alf.publish('playlist:add', itemObj);
-      return length++;
+      return itemObj;
     },
 
     remove: function(item) {
@@ -128,7 +166,7 @@ IMCoop.playlist = (function() {
       }
 
       alf.publish('playlist:remove', itemObj);
-      return length--;
+      return itemObj;
     },
 
     next: function() {
@@ -162,11 +200,16 @@ IMCoop.playlist = (function() {
    * Load playlist from local storage.
    */
   (function() {
-    var items = window.localStorage.getItem('playlist');
+    var localItems = window.localStorage.getItem('playlist'),
+        items = JSON.parse(localItems);
     if (!items) return;
 
-    JSON.parse(items).forEach(function(item) {
-      playlist.add(item);
+    items.forEach(function(item) {
+      var itemObj = playlist.add(item);
+      if (!plHead) {
+        plHead = itemObj
+      }
+      plTail = itemObj;
     });
   })();
 

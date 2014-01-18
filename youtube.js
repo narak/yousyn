@@ -83,6 +83,14 @@ IMCoop.youtube = (function() {
       ytplayer.loadVideoById(videoId);
     },
 
+    stop: function() {
+      ytplayer.stopVideo();
+    },
+
+    pause: function() {
+      ytplayer.pauseVideo();
+    },
+
     getProps: function() {
       return {
         totalTime: Math.round(+ytplayer.getDuration()),
