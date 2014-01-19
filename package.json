@@ -1,0 +1,19 @@
+{
+    "name": "PushServer",
+    "version": "1.0.0",
+    "private": true,
+    "scripts": {
+        "start": "node ./app"
+    },
+    "dependencies": {
+        "socket.io": "*",
+        "connect": "*"
+    },
+    "description": "Push server for AdminUI",
+    "main": "app.js",
+    "devDependencies": {},
+    "engines": {
+        "node": ">=0.10"
+    },
+    "author": "karan@zopnow.com"
+}

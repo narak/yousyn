@@ -1,8 +1,8 @@
 <!doctype html>
 <html>
 <head>
-  <title>Idvc Music Coop</title>
-  <link href="style.css" rel="stylesheet">
+  <title>{{roomName}}</title>
+  <link href="css/style.css" rel="stylesheet">
 </head>
 <body>
   <a href="#rollup" id="roll-up"><i class="fa fa-chevron-left"></i><i class="fa fa-chevron-right"></i></a>
@@ -16,7 +16,7 @@
       <li class="repeat"><a href="#repeat"><i class="fa fa-repeat"></i></a></li>
       <li class="random"><a href="#random"><i class="fa fa-random"></i></a></li>
     </ul>
-    <h2>Idvc Music Coop</h2>
+    <h2>{{roomName}}</h2>
     <a href="#" id="login-link" class="show-on-load">Login</a>
     <small>
       <a href="#remove-all" class="remove-all">Remove All</a>
@@ -38,7 +38,7 @@
     </div>
   </div>
 
-  <script src="alf.js"></script>
+  <script src="js/alf.js"></script>
   <script>
     var IMCoopConfig = {
       playingClass: 'playing',
@@ -83,10 +83,10 @@
   </div>
 
   <script src="//ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js"></script>
-  <script src="playlist.js"></script>
-  <script src="search.js"></script>
-  <script src="youtube.js"></script>
-  <script src="auth.js"></script>
+  <script src="js/playlist.js"></script>
+  <script src="js/search.js"></script>
+  <script src="js/youtube.js"></script>
+  <script src="js/auth.js"></script>
   <script> var googleApiClientReady = IMCoop.auth.googleApiClientReady; </script>
   <script src="//apis.google.com/js/client.js?onload=googleApiClientReady"></script>
 </body>
