@@ -89,7 +89,6 @@ IMCoop.youtube = (function() {
 
     stop: function() {
       ytplayer.stopVideo();
-      ytplayer.clearVideo();
     },
 
     pause: function() {

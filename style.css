@@ -104,6 +104,57 @@ hr {
     padding: 0;
 }
 
+.mask {
+    display: none;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 900;
+    background: rgba(255, 255, 255, .5);
+}
+    .mask.show {
+        display: block;
+    }
+.datAlert {
+    z-index: 1000;
+    text-align: center;
+    position: absolute;
+    top: -30%;
+    left: 50%;
+    width: 900px;
+    margin-left: -450px;
+    -webkit-transition: -webkit-transform .5s ease-in-out;
+    -moz-transition: -webkit-transform .5s ease-in-out;
+    -ms-transition: -webkit-transform .5s ease-in-out;
+    -o-transition: -webkit-transform .5s ease-in-out;
+    transition: -webkit-transform .5s ease-in-out;
+}
+    .datAlert.show {
+        -webkit-transform: translateY(400%);
+        -moz-transform: translateY(400%);
+        -ms-transform: translateY(400%);
+        -o-transform: translateY(400%);
+        transform: translateY(400%);
+    }
+    .datAlert button {
+        margin-top: 2rem;
+        width: 100%;
+        background-color: rgba(0, 0, 0, .3);
+        border: 0;
+        border-radius: .3rem;
+        color: #fff;
+        font-size: 1.2rem;
+        font-weight: 300;
+        padding: .5rem;
+        outline: 0;
+        cursor: pointer;
+    }
+    .datAlert button:hover {
+        background-color: rgba(0, 0, 0, .6);
+    }
+
 .hide, .show-on-load {
     display: none;
 }

@@ -694,3 +694,31 @@
     if (typeof define === 'function' && define.amd)
         define(function() { return alf; });
 })(document, window);
+
+(function(window) {
+    var mask = document.createElement('div'),
+        div = document.createElement('div'),
+        elMsg;
+
+    mask.classList.add('mask');
+    document.body.appendChild(mask);
+
+    div.classList.add('datAlert');
+    div.innerHTML = '<h2></h2><button type="button"><i class="fa fa-times"></i></button>';
+    elMsg = div.getElementsByTagName('h2')[0];
+    document.body.appendChild(div);
+
+    alf.event.on(div.getElementsByTagName('button')[0], 'click', function(evt) {
+        evt.preventDefault();
+        div.classList.remove('show');
+        mask.classList.remove('show');
+    });
+
+    window.alert = function(msg) {
+        elMsg.innerHTML = msg;
+        window.setTimeout(function() {
+            div.classList.add('show');
+            mask.classList.add('show');
+        }, 4);
+    };
+})(window);
