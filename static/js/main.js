@@ -5,7 +5,7 @@ alf.event.on(document.getElementById('roll-up'), 'click', function() {
 
 (function(window, undefined) {
   var sockOpts = document.body.dataset.rootPath ?
-        { resource: document.body.dataset.rootPath.substring(1) } :
+        { resource: document.body.dataset.rootPath.substring(1) + '/socket.io' } :
         undefined,
       socket = io.connect(window.location.origin, sockOpts),
       room = window.location.pathname.substring(document.body.dataset.rootPath.length);
