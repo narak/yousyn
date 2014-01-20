@@ -1,3 +1,5 @@
+var elSeekBar = document.getElementById('seek-bar');
+
 var IMCoopConfig = {
   playingClass: 'playing',
   broadcastActions: false,
@@ -15,7 +17,11 @@ var IMCoopConfig = {
     btnNext: document.querySelector('#playlist .next-track'),
     btnPrevious: document.querySelector('#playlist .previous-track'),
     btnRandom: document.querySelector('#playlist .random'),
-    btnRepeat: document.querySelector('#playlist .repeat')
+    btnRepeat: document.querySelector('#playlist .repeat'),
+
+    seekBar: elSeekBar.querySelector('input'),
+    elapsedTime: elSeekBar.querySelector('.elapsedTime'),
+    duration: elSeekBar.querySelector('.duration')
   },
   template: {
     searching: alf.template('<li style="padding: .4rem .8rem">Searching for {{=term}}...</li>'),
@@ -26,7 +32,7 @@ var IMCoopConfig = {
 
     playlistItem: alf.template('<li><a href="#{{=videoId}}" class="play">' +
         '<i class="fa fa-play"></i> {{=title}} ' +
-        '<span class="meta">{{=elapsedTime}} / {{=duration}}</span>' +
+        '<span class="meta">{{=duration}}</span>' +
         '</a>' +
         '<span class="actions"><a href="#{{=videoId}}" class="remove"><i class="fa fa-times"></i></a></span></li>')
   }

@@ -95,6 +95,10 @@ IMCoop.youtube = (function() {
       ytplayer.pauseVideo();
     },
 
+    seek: function(sex) {
+      ytplayer.seekTo(sex);
+    },
+
     getProps: function() {
       return {
         totalTime: Math.round(+ytplayer.getDuration()),

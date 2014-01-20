@@ -17,15 +17,6 @@ IMCoop.playlist = (function() {
    * Private.
    */
   doEventsFn = function() {
-    /*alf.event.on(IMCoopConfig.el.btnRemoveAll, 'click', function(evt) {
-      evt.preventDefault();
-
-      IMCoopConfig.el.playlist.innerHTML = '';
-      plTail = plCurrent = plHead = undefined;
-      length = 0;
-      window.localStorage.clear('playlist');
-    });*/
-
     alf.event.on(IMCoopConfig.el.playlist, 'click', '.list .remove', function(evt) {
       evt.preventDefault();
       var videoId = this.getAttribute('href').substring(1),
@@ -92,6 +83,10 @@ IMCoop.playlist = (function() {
       }
       flags.isRandomOn = !flags.isRandomOn;
     });
+
+    alf.event.on(IMCoopConfig.el.seekBar, 'change', function(evt) {
+      IMCoop.youtube.seek(this.value);
+    });
   };
 
   /**
@@ -105,6 +100,7 @@ IMCoop.playlist = (function() {
       }
       plCurrent = plHead;
     }
+
 
     console.log('Playing: ', plCurrent.title, plCurrent.videoId);
     IMCoop.youtube.play(!plCurrent.isPaused ? plCurrent.videoId : undefined);
@@ -123,9 +119,15 @@ IMCoop.playlist = (function() {
     IMCoopConfig.el.btnPause.style.display = '';
     document.title = '\u266B ' + plCurrent.title;
 
+    IMCoopConfig.el.seekBar.value = 0;
     if (!pollTimer) {
       pollTimer = window.setInterval(function() {
         var props = IMCoop.youtube.getProps();
+        if (IMCoopConfig.el.seekBar.max !== props.totalTime) {
+          IMCoopConfig.el.seekBar.max = props.totalTime;
+          IMCoopConfig.el.duration.innerHTML = timeFromSexFn(props.totalTime);
+        }
+        IMCoopConfig.el.seekBar.value = props.currentTime;
 
         if (props.totalTime === 0) return;
 
@@ -133,7 +135,11 @@ IMCoop.playlist = (function() {
             props.currentTime > props.totalTime - 2) {
           alf.publish('playlist:next');
         } else {
-          plCurrent.elElapsedTime.innerHTML = timeFromSexFn(props.currentTime);
+          var hTime = timeFromSexFn(props.currentTime);
+          IMCoopConfig.el.elapsedTime.innerHTML = hTime;
+          if (plCurrent.elElapsedTime) {
+            plCurrent.elElapsedTime = hTime;
+          }
         }
       }, 1000);
     }
@@ -144,7 +150,9 @@ IMCoop.playlist = (function() {
     res = sex / 60;
     mins = Math.floor(res);
     secs = Math.round((res % 1) * 60);
-    if (secs < 10) {
+    if (secs === 0) {
+      str = mins + ':00';
+    } else if (secs < 10) {
       str = mins + ':0' + secs;
     } else {
       str = mins + ':' + secs;

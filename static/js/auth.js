@@ -9,6 +9,7 @@ var IMCoop = IMCoop || {};
   // you need to register your own client ID.
   var OAUTH2_CLIENT_ID = '202238732462-6qak38uign58vk5o0v2qt15je03830q4.apps.googleusercontent.com',
       OAUTH2_SCOPES = [
+        'profile',
         'https://www.googleapis.com/auth/youtube'
       ];
 

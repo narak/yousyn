@@ -1,7 +1,7 @@
 module.exports = {
-    rootUrlPath: '/yousyn',
+    rootUrlPath: '',
     defaultRoom: 'Idvc Music',
-    port: 2370,
+    port: 8000,
     transports: ["websocket", "htmlfile", "xhr-polling", "jsonp-polling"],
     poll_duration: 20,
     log_level: 1,

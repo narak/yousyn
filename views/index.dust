@@ -21,6 +21,10 @@
     <!--small>
       <a href="#remove-all" class="remove-all show-on-load">Remove All</a>
     </small-->
+    <div id="seek-bar">
+      <small class="elapsedTime"></small><small class="duration"></small>
+      <input type="range" min="0" max="100" value="0">
+    </div>
     <ul class="show-on-load list"></ul>
   </div>
   <div id="search">
