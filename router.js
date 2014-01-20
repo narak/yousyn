@@ -6,6 +6,8 @@ var config = require('./config'),
     http = require('http'),
     fs = require('fs'),
     dust = require('dustjs-linkedin'),
+    dive = require('dive'),
+    path = require('path'),
     routes = {
         get: {},
         post: {}
@@ -18,19 +20,29 @@ var config = require('./config'),
 /**
  * Compile dust templates.
  */
-var templates = ['index'];
-(function() {
-    templates.forEach(function(t) {
-        fs.readFile(config.viewPath + t + '.dust', function(err, data) {
+dive(config.viewPath, {
+    all: false,
+    directories: false,
+    files: true,
+    recursive: true
+}, function(err, file) {
+    if (err) throw err;
+
+    var filename, ext;
+    ext = path.extname(file);
+    if (ext === '.dust') {
+        filename = path.basename(file, '.dust');
+
+        fs.readFile(file, function(err, data) {
             if (err) {
-                console.error(err);
+                throw err;
             } else {
-                dust.loadSource(dust.compile(data.toString(), t));
-                console.log('Compiling template: ' + t);
+                dust.loadSource(dust.compile(data.toString(), filename));
+                console.log('Compiling template: ' + filename);
             }
         });
-    });
-})();
+    }
+});
 
 /**
  * Extending http response object to be able to send view files.

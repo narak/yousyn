@@ -8,7 +8,8 @@
     "dependencies": {
         "socket.io": "*",
         "connect": "*",
-        "dustjs-linkedin": "*"
+        "dustjs-linkedin": "*",
+        "dive": "*"
     },
     "description": "Push server for AdminUI",
     "main": "app.js",
