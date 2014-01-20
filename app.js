@@ -51,6 +51,9 @@ socket.configure(function () {
     socket.set("transports", config.transports);
     socket.set("polling duration", config.poll_duration);
     socket.set('log level', config.log_level);
+    if (config.rootUrlPath) {
+        socket.set('resource', config.rootUrlPath + '/socket.io');
+    }
 });
 socket.on('connection', sock.doSocket);
 console.log('Socket setup.');
