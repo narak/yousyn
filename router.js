@@ -17,6 +17,9 @@ var config = require('./config'),
         post: []
     };
 
+// Set up a base context with a global helper function
+var base = dust.makeBase(config);
+
 /**
  * Compile dust templates.
  */
@@ -49,7 +52,7 @@ dive(config.viewPath, {
  */
 http.ServerResponse.prototype.sendView = function(view, tplVars) {
     var res = this;
-    dust.render(view, tplVars, function(err, out) {
+    dust.render(view, base.push(tplVars)config.js, function(err, out) {
         if (err) {
             console.error(err);
         } else {
