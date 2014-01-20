@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+<head>
+  <title>{roomName}</title>
+  <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+  <a href="#rollup" id="roll-up"><i class="fa fa-chevron-left"></i><i class="fa fa-chevron-right"></i></a>
+  <div id="playlist">
+    <ul class="controls show-on-load">
+      <li class="previous-track"><a href="#previous-track"><i class="fa fa-backward"></i></a></li>
+      <li class="play"><a href="#play"><i class="fa fa-play"></i></a></li>
+      <li class="pause" style="display: none"><a href="#pause"><i class="fa fa-pause"></i></a></li>
+      <li class="stop"><a href="#stop"><i class="fa fa-stop"></i></a></li>
+      <li class="next-track"><a href="#next-track"><i class="fa fa-forward"></i></a></li>
+      <li class="repeat"><a href="#repeat"><i class="fa fa-repeat"></i></a></li>
+      <li class="random"><a href="#random"><i class="fa fa-random"></i></a></li>
+    </ul>
+    <h2>{roomName}</h2>
+    <a href="#" id="login-link" class="show-on-load">Login</a>
+    <small>
+      <a href="#remove-all" class="remove-all">Remove All</a>
+    </small>
+    <ul class="show-on-load list"></ul>
+  </div>
+  <div id="search">
+    <div id="buttons" class="show-on-load">
+      <form method="post" id="search-form">
+        <label><input id="query" type="text" name="term"
+          placeholder="Search" autocomplete="off"
+          required autofocus>
+        <button type="submit">Search</button></label>
+      </form>
+    </div>
+    <div id="search-container">
+      <ul class="list">
+      </ul>
+    </div>
+  </div>
+  <div id="ytapiplayer">
+    You need Flash player 8+ and JavaScript enabled to view this video.
+  </div>
+
+  <script src="js/alf.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/swfobject.js"></script>
+  <script src="js/playlist.js"></script>
+  <script src="js/search.js"></script>
+  <script src="js/youtube.js"></script>
+  <script src="js/auth.js"></script>
+  <script> var googleApiClientReady = IMCoop.auth.googleApiClientReady; </script>
+  <script src="//apis.google.com/js/client.js?onload=googleApiClientReady"></script>
+</body>
+</html>

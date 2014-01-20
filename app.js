@@ -50,13 +50,13 @@ socket.on('connection', sock.doSocket);
 console.log('Socket setup.');*/
 
 router.get('/', function(req, res) {
-    res.sendView('index.template', {
+    res.sendView('index', {
         roomName: 'Idvc Music'
     });
 });
 
 router.get('/{roomName}', function(req, res) {
-    res.sendView('index.template', {
+    res.sendView('index', {
         roomName: req.params.roomName
     });
 });

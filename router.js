@@ -5,7 +5,7 @@ var config = require('./config'),
     urlLib = require('url'),
     http = require('http'),
     fs = require('fs'),
-    template = require('./template'),
+    dust = require('dustjs-linkedin'),
     routes = {
         get: {},
         post: {}
@@ -16,35 +16,34 @@ var config = require('./config'),
     };
 
 /**
+ * Compile dust templates.
+ */
+var templates = ['index'];
+(function() {
+    templates.forEach(function(t) {
+        fs.readFile(config.viewPath + t + '.dust', function(err, data) {
+            if (err) {
+                console.error(err);
+            } else {
+                dust.loadSource(dust.compile(data.toString(), t));
+                console.log('Compiling template: ' + t);
+            }
+        });
+    });
+})();
+
+/**
  * Extending http response object to be able to send view files.
  */
-http.ServerResponse.prototype.sendView = function(path, tplVars) {
-    // This line opens the file as a readable stream
-    var res = this,
-        readStream = fs.createReadStream(config.viewPath + path);
-
-    if (!tplVars) {
-        tplVars = {};
-    }
-
-    fs.readFile(config.viewPath + path, function(err, data) {
+http.ServerResponse.prototype.sendView = function(view, tplVars) {
+    var res = this;
+    dust.render(view, tplVars, function(err, out) {
         if (err) {
-            return console.error(err);
+            console.error(err);
+        } else {
+            res.end(out);
         }
-        res.end(template(data.toString(), tplVars));
     });
-
-/*
-    // This will wait until we know the readable stream is actually valid before piping
-    readStream.on('open', function () {
-        // This just pipes the read stream to the response object (which goes to the client)
-        readStream.pipe(res);
-    });
-
-    // This catches any errors that happen while creating the readable stream (usually invalid names)
-    readStream.on('error', function(err) {
-        res.end(err);
-    });*/
 };
 
 /**
