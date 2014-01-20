@@ -66,9 +66,17 @@ http.ServerResponse.prototype.sendView = function(view, tplVars) {
 exports.router = function(req, res) {
     var path = urlLib.parse(req.url).pathname,
         method = req.method.toLowerCase(),
-        handle = getCallback(method, path),
         params = {},
-        matches;
+        matches, handle;
+
+    if (config.rootUrlPath) {
+        if (path.indexOf(config.rootUrlPath) === 0) {
+            path = path.substring(config.rootUrlPath.length);
+            handle = getCallback(method, path);
+        }
+    } else {
+        handle = getCallback(method, path);
+    }
 
     if (handle) {
         console.log(new Date().toString() + ' ' + method + ' ' + path, req.body);
