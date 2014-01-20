@@ -4,16 +4,17 @@ alf.event.on(document.getElementById('roll-up'), 'click', function() {
 });
 
 (function(window, undefined) {
-  var socket = io.connect('http://localhost:8000');
+  var socket = io.connect('http://localhost:8000'),
+      room = window.location.pathname.substring(document.body.dataset.rootPath.length);
   console.log('Joining room...');
-  socket.emit('join', window.location.pathname, function(items) {
+  socket.emit('join', room, function(items) {
     if (items) {
-      console.log('Joined:', window.location.pathname);
+      console.log('Joined:', room);
       if (alf.util.isArray(items)) {
         IMCoop.playlist.load(items, { isSocket: true });
       }
     } else {
-      console.error('Could not join: ', window.location.pathname);
+      console.error('Could not join: ', room);
     }
   });
 

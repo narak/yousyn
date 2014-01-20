@@ -1,6 +1,5 @@
 module.exports = {
-    rootUrlPath: '',
-    staticPath: 'http://localhost:8000',
+    rootUrlPath: '/karan',
     defaultRoom: 'Idvc Music',
     port: 8000,
     transports: ["websocket", "htmlfile", "xhr-polling", "jsonp-polling"],

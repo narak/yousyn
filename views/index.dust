@@ -2,9 +2,9 @@
 <html>
 <head>
   <title>YouSyn: {roomName}</title>
-  <link href="{staticPath}/css/style.css" rel="stylesheet">
+  <link href="{rootUrlPath}/css/style.css" rel="stylesheet">
 </head>
-<body>
+<body data-root-path="{rootUrlPath}">
   <a href="#rollup" id="roll-up" class="show-on-load"><i class="fa fa-chevron-left"></i><i class="fa fa-chevron-right"></i></a>
   <div id="playlist">
     <ul class="controls show-on-load">
@@ -41,15 +41,15 @@
     You need Flash player 8+ and JavaScript enabled to view this video.
   </div>
 
-  <script src="{staticPath}/socket.io/socket.io.js"></script>
-  <script src="{staticPath}/js/alf.js"></script>
-  <script src="{staticPath}/js/config.js"></script>
-  <script src="{staticPath}/js/swfobject.js"></script>
-  <script src="{staticPath}/js/playlist.js"></script>
-  <script src="{staticPath}/js/search.js"></script>
-  <script src="{staticPath}/js/youtube.js"></script>
-  <script src="{staticPath}/js/auth.js"></script>
-  <script src="{staticPath}/js/main.js"></script>
+  <script src="{rootUrlPath}/js/socket.io.js"></script>
+  <script src="{rootUrlPath}/js/alf.js"></script>
+  <script src="{rootUrlPath}/js/config.js"></script>
+  <script src="{rootUrlPath}/js/swfobject.js"></script>
+  <script src="{rootUrlPath}/js/playlist.js"></script>
+  <script src="{rootUrlPath}/js/search.js"></script>
+  <script src="{rootUrlPath}/js/youtube.js"></script>
+  <script src="{rootUrlPath}/js/auth.js"></script>
+  <script src="{rootUrlPath}/js/main.js"></script>
   <script> var googleApiClientReady = IMCoop.auth.googleApiClientReady; </script>
   <script src="//apis.google.com/js/client.js?onload=googleApiClientReady"></script>
 </body>

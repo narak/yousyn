@@ -17,6 +17,12 @@ var config = require('./config'),
  * Create server with middle wares.
  */
 var app = connect()
+    .use(function(req, res, next) {
+        if (config.rootUrlPath) {
+            req.url = req.url.replace(config.rootUrlPath, '');
+        }
+        next();
+    })
     .use(connect.favicon())
     .use(connect.logger({
         format: 'default',
@@ -25,7 +31,7 @@ var app = connect()
     }))
     .use(connect.json())
     .use(connect.urlencoded())
-    .use(connect.static('static'))
+    .use(connect.static(__dirname + '/static'))
     .use(function(req, res, next) {
         res.setHeader('Access-Control-Allow-Headers', 'origin, x-requested-with, content-type');
         res.setHeader('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
