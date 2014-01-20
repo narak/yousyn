@@ -17,14 +17,14 @@ IMCoop.playlist = (function() {
    * Private.
    */
   doEventsFn = function() {
-    alf.event.on(IMCoopConfig.el.btnRemoveAll, 'click', function(evt) {
+    /*alf.event.on(IMCoopConfig.el.btnRemoveAll, 'click', function(evt) {
       evt.preventDefault();
 
       IMCoopConfig.el.playlist.innerHTML = '';
       plTail = plCurrent = plHead = undefined;
       length = 0;
       window.localStorage.clear('playlist');
-    });
+    });*/
 
     alf.event.on(IMCoopConfig.el.playlist, 'click', '.list .remove', function(evt) {
       evt.preventDefault();
@@ -379,30 +379,25 @@ IMCoop.playlist = (function() {
 
       alf.publish('playlist:previous', retVal);
       return retVal;
+    },
+
+    load: function(items, opts) {
+      if (!items) return;
+
+      items.forEach(function(item) {
+        if (item.video_id) {
+          item.videoId = item.video_id;
+          delete item.video_id;
+        }
+        playlist.add(item, opts);
+      });
     }
   };
 
   /**
-   * Load playlist from local storage.
-   */
-  (function() {
-    var localItems = window.localStorage.getItem('playlist'),
-        items = JSON.parse(localItems);
-    if (!items) return;
-
-    items.forEach(function(item) {
-      var itemObj = playlist.add(item);
-      if (!plHead) {
-        plHead = itemObj
-      }
-      plTail = itemObj;
-    });
-  })();
-
-  /**
    * Save playlist to local storage everytime something is added to it.
    */
-  var saveToLocal = function() {
+  /*var saveToLocal = function() {
     var item = plHead,
         marshalled = [];
 
@@ -417,7 +412,7 @@ IMCoop.playlist = (function() {
     window.localStorage.setItem('playlist', JSON.stringify(marshalled));
   };
   alf.subscribe('playlist:add', saveToLocal);
-  alf.subscribe('playlist:remove', saveToLocal);
+  alf.subscribe('playlist:remove', saveToLocal);*/
 
   doEventsFn();
   return playlist;

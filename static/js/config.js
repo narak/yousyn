@@ -1,5 +1,6 @@
 var IMCoopConfig = {
   playingClass: 'playing',
+  broadcastActions: false,
   el: {
     login: document.getElementById('login-link'),
     playlist: document.querySelector('#playlist ul.list'),

@@ -6,9 +6,12 @@ alf.event.on(document.getElementById('roll-up'), 'click', function() {
 (function(window, undefined) {
   var socket = io.connect('http://localhost:8000');
   console.log('Joining room...');
-  socket.emit('join', window.location.pathname, function(state) {
-    if (state) {
+  socket.emit('join', window.location.pathname, function(items) {
+    if (items) {
       console.log('Joined:', window.location.pathname);
+      if (alf.util.isArray(items)) {
+        IMCoop.playlist.load(items, { isSocket: true });
+      }
     } else {
       console.error('Could not join: ', window.location.pathname);
     }
@@ -41,4 +44,5 @@ alf.event.on(document.getElementById('roll-up'), 'click', function() {
       socket.emit('remove', item);
     }
   });
+
 })(window);

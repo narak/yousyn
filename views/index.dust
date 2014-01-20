@@ -18,9 +18,9 @@
     </ul>
     <h2>{roomName}</h2>
     <a href="#" id="login-link" class="show-on-load">Login</a>
-    <small>
+    <!--small>
       <a href="#remove-all" class="remove-all show-on-load">Remove All</a>
-    </small>
+    </small-->
     <ul class="show-on-load list"></ul>
   </div>
   <div id="search">
