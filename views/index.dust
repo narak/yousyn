@@ -5,7 +5,7 @@
   <link href="css/style.css" rel="stylesheet">
 </head>
 <body>
-  <a href="#rollup" id="roll-up"><i class="fa fa-chevron-left"></i><i class="fa fa-chevron-right"></i></a>
+  <a href="#rollup" id="roll-up" class="show-on-load"><i class="fa fa-chevron-left"></i><i class="fa fa-chevron-right"></i></a>
   <div id="playlist">
     <ul class="controls show-on-load">
       <li class="previous-track"><a href="#previous-track"><i class="fa fa-backward"></i></a></li>
@@ -19,7 +19,7 @@
     <h2>{roomName}</h2>
     <a href="#" id="login-link" class="show-on-load">Login</a>
     <small>
-      <a href="#remove-all" class="remove-all">Remove All</a>
+      <a href="#remove-all" class="remove-all show-on-load">Remove All</a>
     </small>
     <ul class="show-on-load list"></ul>
   </div>
@@ -41,13 +41,15 @@
     You need Flash player 8+ and JavaScript enabled to view this video.
   </div>
 
-  <script src="js/alf.js"></script>
-  <script src="js/main.js"></script>
-  <script src="js/swfobject.js"></script>
-  <script src="js/playlist.js"></script>
-  <script src="js/search.js"></script>
-  <script src="js/youtube.js"></script>
-  <script src="js/auth.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/alf.js"></script>
+  <script src="/js/config.js"></script>
+  <script src="/js/swfobject.js"></script>
+  <script src="/js/playlist.js"></script>
+  <script src="/js/search.js"></script>
+  <script src="/js/youtube.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/main.js"></script>
   <script> var googleApiClientReady = IMCoop.auth.googleApiClientReady; </script>
   <script src="//apis.google.com/js/client.js?onload=googleApiClientReady"></script>
 </body>

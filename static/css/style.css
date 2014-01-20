@@ -112,12 +112,13 @@ hr {
     top: 0;
     left: 0;
     z-index: 900;
-    background: rgba(255, 255, 255, .5);
+    background: rgba(255, 255, 255, .7);
 }
     .mask.show {
         display: block;
     }
 .datAlert {
+    color: #f00;
     z-index: 1000;
     text-align: center;
     position: absolute;

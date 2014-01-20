@@ -10,8 +10,8 @@ var config = require('./config'),
     router = require('./router'),
     fs = require('fs'),
 
-    logPath = 'connectjs_log.log',
-    logFile = fs.createWriteStream(logPath, {flags: 'a'});
+    connectLog = 'connectjs_log.log',
+    connectLogFile = fs.createWriteStream(connectLog, {flags: 'a'});
 
 /**
  * Create server with middle wares.
@@ -20,7 +20,7 @@ var app = connect()
     .use(connect.favicon())
     .use(connect.logger({
         format: 'default',
-        stream: logFile,
+        stream: connectLogFile,
         buffer: true
     }))
     .use(connect.json())
@@ -40,18 +40,18 @@ console.log('Server running on port ' + config.port);
 /*
  * Socket IO
  */
-/*var socket = sockio.listen(server);
+var socket = sockio.listen(server);
 socket.configure(function () {
     socket.set("transports", config.transports);
     socket.set("polling duration", config.poll_duration);
     socket.set('log level', config.log_level);
 });
 socket.on('connection', sock.doSocket);
-console.log('Socket setup.');*/
+console.log('Socket setup.');
 
 router.get('/', function(req, res) {
     res.sendView('index', {
-        roomName: 'Idvc Music'
+        roomName: config.defaultRoom
     });
 });
 

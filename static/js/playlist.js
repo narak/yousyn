@@ -251,6 +251,13 @@ IMCoop.playlist = (function() {
   Item.prototype.setPrevious = function(item) {
     this._previousItem = item;
   };
+  Item.prototype.getProps = function() {
+    return {
+      videoId: this.videoId,
+      title: this.title,
+      duration: this.duration
+    };
+  };
 
   addToPlaylistView = function(itemObj) {
     var newItem = new Item(itemObj),
@@ -279,29 +286,46 @@ IMCoop.playlist = (function() {
    * Public.
    */
   playlist = {
-    add: function(item) {
+    add: function(item, opts) {
+      if (!opts) opts = {};
+
       var itemObj = new Item(item);
       if (videoIdIndex[itemObj.videoId]) {
-        alert('This video already exists in the playlist');
+        alert('This video already exists in the playlist!');
         return;
       }
+
       if (!plHead) {
         plHead = plTail = itemObj;
       } else {
-        itemObj.setPrevious(plTail);
-        plTail.setNext(itemObj);
-        plTail = itemObj;
+        if (opts.previousItem && videoIdIndex[opts.previousItem.videoId]) {
+          var previous = videoIdIndex[opts.previousItem.videoId];
+          itemObj.setPrevious(previous);
+          itemObj.setNext(previous.getNext())
+          previous.setNext(itemObj);
+
+        } else {
+          itemObj.setPrevious(plTail);
+          plTail.setNext(itemObj);
+          plTail = itemObj;
+        }
       }
       videoIdIndex[itemObj.videoId] = itemObj;
       videoIds.push(itemObj.videoId);
 
-      alf.publish('playlist:add', itemObj);
+      alf.publish('playlist:add', [itemObj, opts]);
       return itemObj;
     },
 
-    remove: function(item) {
+    remove: function(item, opts) {
+      if (!opts) opts = {};
+
       var previous,
           next;
+
+      if (!(item instanceof Item)) {
+        item = videoIdIndex[item.videoId];
+      }
 
       if (item.el) item.el.remove();
       previous = item.getPrevious();
@@ -328,7 +352,7 @@ IMCoop.playlist = (function() {
       delete videoIdIndex[item.videoId];
       removeFromArray(videoIds, item.videoId);
 
-      alf.publish('playlist:remove', item);
+      alf.publish('playlist:remove', [item, opts]);
     },
 
     next: function() {

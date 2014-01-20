@@ -1,37 +1,44 @@
-var IMCoopConfig = {
-  playingClass: 'playing',
-  el: {
-    login: document.getElementById('login-link'),
-    playlist: document.querySelector('#playlist ul.list'),
-    searchField: document.getElementById('query'),
-    searchForm: document.getElementById('search-form'),
-    searchResults: document.querySelector('#search-container ul.list'),
-
-    btnRemoveAll: document.querySelector('#playlist .remove-all'),
-    btnPlay: document.querySelector('#playlist .play'),
-    btnPause: document.querySelector('#playlist .pause'),
-    btnStop: document.querySelector('#playlist .stop'),
-    btnNext: document.querySelector('#playlist .next-track'),
-    btnPrevious: document.querySelector('#playlist .previous-track'),
-    btnRandom: document.querySelector('#playlist .random'),
-    btnRepeat: document.querySelector('#playlist .repeat')
-  },
-  template: {
-    searching: alf.template('<li style="padding: .4rem .8rem">Searching for {{=term}}...</li>'),
-
-    searchItem: alf.template('<li><a href="#{{=videoId}}">' +
-        '<i class="fa fa-plus"></i> {{=title}}' +
-        ' <span class="meta">{{=duration}}</span></a></li>'),
-
-    playlistItem: alf.template('<li><a href="#{{=videoId}}" class="play">' +
-        '<i class="fa fa-play"></i> {{=title}} ' +
-        '<span class="meta">{{=elapsedTime}} / {{=duration}}</span>' +
-        '</a>' +
-        '<span class="actions"><a href="#{{=videoId}}" class="remove"><i class="fa fa-times"></i></a></span></li>')
-  }
-};
-
 alf.event.on(document.getElementById('roll-up'), 'click', function() {
-  document.getElementById('playlist').classList.toggle('hidden');
-  document.getElementById('search').classList.toggle('hidden');
+    document.getElementById('playlist').classList.toggle('hidden');
+    document.getElementById('search').classList.toggle('hidden');
 });
+
+(function(window, undefined) {
+  var socket = io.connect('http://localhost:8000');
+  console.log('Joining room...');
+  socket.emit('join', window.location.pathname, function(state) {
+    if (state) {
+      console.log('Joined:', window.location.pathname);
+    } else {
+      console.error('Could not join: ', window.location.pathname);
+    }
+  });
+
+  socket.on('add', function(item, previousItem) {
+    IMCoop.playlist.add(item, {
+      previousItem: previousItem,
+      isSocket: true
+    });
+  });
+
+  alf.subscribe('playlist:add', function(itemObj, opts) {
+    if (!opts) opts = {};
+    if (!opts.isSocket) {
+      var item = itemObj.getProps(),
+          previous = itemObj.getPrevious() ? itemObj.getPrevious().getProps() : undefined;
+      socket.emit('add', item, previous);
+    }
+  });
+
+  socket.on('remove', function(item) {
+    IMCoop.playlist.remove(item, { isSocket: true });
+  });
+
+  alf.subscribe('playlist:remove', function(itemObj, opts) {
+    if (!opts) opts = {};
+    if (!opts.isSocket) {
+      var item = itemObj.getProps();
+      socket.emit('remove', item);
+    }
+  });
+})(window);

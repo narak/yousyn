@@ -1,4 +1,5 @@
 module.exports = {
+    defaultRoom: 'Idvc Music',
     port: 8000,
     transports: ["websocket", "htmlfile", "xhr-polling", "jsonp-polling"],
     poll_duration: 20,
