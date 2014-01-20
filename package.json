@@ -1,5 +1,5 @@
 {
-    "name": "PushServer",
+    "name": "YouSyn",
     "version": "1.0.0",
     "private": true,
     "scripts": {
@@ -10,13 +10,13 @@
         "connect": "*",
         "dustjs-linkedin": "*",
         "dive": "*",
-        "node-sqlite3"
+        "sqlite3": "*"
     },
-    "description": "Push server for AdminUI",
+    "description": "Remembering and syncing youtube playlists between multiple people in rooms.",
     "main": "app.js",
     "devDependencies": {},
     "engines": {
         "node": ">=0.10"
     },
-    "author": "karan@zopnow.com"
+    "author": "karansheth@gmail.com"
 }
