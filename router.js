@@ -52,7 +52,7 @@ dive(config.viewPath, {
  */
 http.ServerResponse.prototype.sendView = function(view, tplVars) {
     var res = this;
-    dust.render(view, base.push(tplVars)config.js, function(err, out) {
+    dust.render(view, base.push(tplVars), function(err, out) {
         if (err) {
             console.error(err);
         } else {
