@@ -10,8 +10,17 @@ IMCoop.playlist = (function() {
       plHead, plTail, plCurrent, plOldCurr,
       addToPlaylistView, doEventsFn, timeFromSexFn,
       pollTimer,
-      flags = {},
+      flags,
       length = 0;
+
+  flags = {
+    isRepeatOn: false,
+    isRandomOn: false,
+    isPlaying: false,
+    isListening: true,
+    isRemote: false,
+    isShowingVideo: false
+  };
 
   /**
    * Private.
@@ -32,6 +41,18 @@ IMCoop.playlist = (function() {
       if (videoId && videoIdIndex[videoId]) {
         plCurrent = videoIdIndex[videoId];
         alf.publish('playlist:play');
+      }
+    });
+
+    alf.event.on(IMCoopConfig.el.btnShowVideo, 'click', function(evt) {
+      evt.preventDefault();
+      var player = document.querySelector('.video-player');
+      if (player.classList.contains('show')) {
+        this.classList.remove('active');
+        player.classList.remove('show');
+      } else {
+        this.classList.add('active');
+        player.classList.add('show');
       }
     });
 

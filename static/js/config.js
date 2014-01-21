@@ -19,6 +19,10 @@ var IMCoopConfig = {
     btnRandom: document.querySelector('#playlist .random'),
     btnRepeat: document.querySelector('#playlist .repeat'),
 
+    btnListening: document.querySelector('#playlist .listening'),
+    btnRemote: document.querySelector('#playlist .remote'),
+    btnShowVideo: document.querySelector('#playlist .show-video'),
+
     seekBar: elSeekBar.querySelector('input'),
     elapsedTime: elSeekBar.querySelector('.elapsedTime'),
     duration: elSeekBar.querySelector('.duration')

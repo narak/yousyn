@@ -22,7 +22,7 @@ body {
     text-rendering: optimizeLegibility;
     padding: 0;
     margin: 0;
-    background: rgba(0, 0, 0, 0.7);
+    background: rgb(22, 23, 29);
     overflow-x: hidden;
 }
 
@@ -154,7 +154,11 @@ hr {
     display: none;
 }
 
+.video-player.show {
+    visibility: visible;
+}
 .video-player {
+    visibility: hidden;
     position: fixed;
     top: 0;
     left: 0;
@@ -310,6 +314,12 @@ hr {
         #playlist .controls li {
             float: left;
         }
+            #playlist .controls .divider {
+                border-left: 2px solid #DF9665;
+                width: 0;
+                height: 1.2rem;
+                margin: .7rem .7rem 0 .5rem;
+            }
             #playlist .controls li a {
                 background-color: rgba(0, 0, 0, .8);
                 border: 0;
@@ -335,6 +345,7 @@ hr {
         height: .5rem;
         box-shadow: 0 0 8px #333;
         box-sizing: border-box;
+        outline: 0;
     }
     #seek-bar input[type="range"]::-webkit-slider-thumb {
         -webkit-appearance: none;

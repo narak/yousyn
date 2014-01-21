@@ -5,7 +5,7 @@
   <link href="{rootUrlPath}/css/style.css" rel="stylesheet">
 </head>
 <body data-root-path="{rootUrlPath}">
-  <a href="#rollup" id="roll-up" class="show-on-load"><i class="fa fa-chevron-left"></i><i class="fa fa-chevron-right"></i></a>
+  <a href="#rollup" id="roll-up" class="show-on-load"><i class="fa fa-expand"></i></a>
   <div id="playlist">
     <ul class="controls show-on-load">
       <li class="previous-track"><a href="#previous-track"><i class="fa fa-backward"></i></a></li>
@@ -15,13 +15,17 @@
       <li class="next-track"><a href="#next-track"><i class="fa fa-forward"></i></a></li>
       <li class="repeat"><a href="#repeat"><i class="fa fa-repeat"></i></a></li>
       <li class="random"><a href="#random"><i class="fa fa-random"></i></a></li>
+      <li class="divider"></li>
+      <li class="listening active"><a href="#listening"><i class="fa fa-headphones"></i></a></li>
+      <li class="remote"><a href="#remote"><i class="fa fa-gamepad"></i></a></li>
+      <li class="show-video"><a href="#show-video"><i class="fa fa-picture-o"></i></a></li>
     </ul>
     <h2>{roomName}</h2>
     <a href="#" id="login-link" class="show-on-load">Login</a>
     <!--small>
       <a href="#remove-all" class="remove-all show-on-load">Remove All</a>
     </small-->
-    <div id="seek-bar">
+    <div id="seek-bar" class="show-on-load">
       <small class="elapsedTime"></small><small class="duration"></small>
       <input type="range" min="0" max="100" value="0">
     </div>
