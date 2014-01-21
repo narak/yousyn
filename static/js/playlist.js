@@ -159,7 +159,6 @@ IMCoop.playlist = (function() {
     }
 
     if (sex > 3600) {
-      alert('Progressive shit jeah!!!');
       hours = Math.floor(sex / 3600);
       str = hours + ':' + str;
     }
