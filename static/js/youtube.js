@@ -57,7 +57,8 @@ IMCoop.youtube = (function() {
   };
 
   params = {
-    allowScriptAccess: 'always'
+    allowScriptAccess: 'always',
+    wmode: 'opaque'
   };
   atts = {
     id: 'myytplayer',
